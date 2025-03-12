@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 
 // Get the API key from environment variables
@@ -22,9 +21,9 @@ export interface Caption {
 
 export const generateCaptions = async (params: GenerateCaptionsRequest): Promise<Caption[]> => {
   try {
-    if (!OPENAI_API_KEY || OPENAI_API_KEY === 'your-api-key-here') {
-      toast.error('Please set your OpenAI API key in the .env file');
-      console.error('OpenAI API key is missing or using the default placeholder value');
+    if (!OPENAI_API_KEY) {
+      toast.error('OpenAI API key is missing. Please check your .env file');
+      console.error('OpenAI API key is missing');
       return [];
     }
 
