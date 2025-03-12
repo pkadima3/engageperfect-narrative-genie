@@ -5,8 +5,9 @@ import UploadMedia from '@/components/Wizard/Steps/UploadMedia';
 import SelectNiche from '@/components/Wizard/Steps/SelectNiche';
 import SelectPlatform from '@/components/Wizard/Steps/SelectPlatform';
 import SelectGoal from '@/components/Wizard/Steps/SelectGoal';
-import { Toaster } from 'sonner';
 import SelectTone from '@/components/Wizard/Steps/SelectTone';
+import GeneratedCaptions from '@/components/Wizard/Steps/GeneratedCaptions';
+import { Toaster } from 'sonner';
 
 // Wizard Content Component
 const WizardContent: React.FC = () => {
@@ -58,6 +59,8 @@ const WizardContent: React.FC = () => {
       return <SelectGoal />;
     case 5:
       return <SelectTone />;
+    case 6:
+      return <GeneratedCaptions />;
     default:
       return <UploadMedia />;
   }
