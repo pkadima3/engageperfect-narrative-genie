@@ -231,7 +231,7 @@ const MediaEditor: React.FC<MediaEditorProps> = ({
               ) : (
                 <video 
                   ref={videoRef}
-                  src={mediaUrl}
+                  src={mediaUrl} 
                   controls
                   className="max-w-full max-h-full"
                 />
