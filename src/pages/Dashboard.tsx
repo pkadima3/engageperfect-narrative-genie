@@ -12,7 +12,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
+import { LogOut, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import PageLayout from '@/components/Layout/PageLayout';
@@ -37,21 +37,31 @@ const Dashboard: React.FC = () => {
         variants={pageTransition}
       >
         <div className="glass-panel rounded-xl p-8 mb-8">
-          <h1 className="text-3xl font-bold mb-4">Welcome, {currentUser?.displayName || 'User'}!</h1>
-          <p className="text-slate-300 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <h1 className="text-3xl font-bold mb-4 sm:mb-0">Welcome, {currentUser?.displayName || 'User'}!</h1>
+            <div className="flex space-x-3">
+              <PrimaryButton
+                variant="outline"
+                onClick={() => navigate('/profile')}
+                icon={<User className="h-4 w-4" />}
+                className="border-slate-700 hover:bg-slate-800"
+              >
+                Profile
+              </PrimaryButton>
+              <PrimaryButton
+                variant="outline"
+                onClick={handleSignOut}
+                icon={<LogOut className="h-4 w-4" />}
+                className="border-slate-700 hover:bg-slate-800"
+              >
+                Sign out
+              </PrimaryButton>
+            </div>
+          </div>
+          
+          <p className="text-slate-300 mb-6 mt-4">
             You're now signed in to EngagePerfect AI. This is your dashboard where you'll be able to manage your content generation.
           </p>
-          
-          <div className="flex justify-end">
-            <PrimaryButton
-              variant="outline"
-              onClick={handleSignOut}
-              icon={<LogOut className="h-4 w-4" />}
-              className="border-slate-700 hover:bg-slate-800"
-            >
-              Sign out
-            </PrimaryButton>
-          </div>
         </div>
         
         <div className="glass-panel rounded-xl p-8">
