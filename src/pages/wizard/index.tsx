@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { WizardProvider, useWizard } from '@/contexts/WizardContext';
 import PageLayout from '@/components/Layout/PageLayout';
@@ -7,6 +6,7 @@ import SelectNiche from '@/components/Wizard/Steps/SelectNiche';
 import SelectPlatform from '@/components/Wizard/Steps/SelectPlatform';
 import SelectGoal from '@/components/Wizard/Steps/SelectGoal';
 import { Toaster } from 'sonner';
+import SelectTone from '@/components/Wizard/Steps/SelectTone';
 
 // Wizard Content Component
 const WizardContent: React.FC = () => {
@@ -56,7 +56,8 @@ const WizardContent: React.FC = () => {
       return <SelectPlatform />;
     case 4:
       return <SelectGoal />;
-    // We'll add the tone step later
+    case 5:
+      return <SelectTone />;
     default:
       return <UploadMedia />;
   }
