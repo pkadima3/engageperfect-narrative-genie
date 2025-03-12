@@ -24,6 +24,7 @@ export const generateCaptions = async (params: GenerateCaptionsRequest): Promise
   try {
     if (!OPENAI_API_KEY || OPENAI_API_KEY === 'your-api-key-here') {
       toast.error('Please set your OpenAI API key in the .env file');
+      console.error('OpenAI API key is missing or using the default placeholder value');
       return [];
     }
 
@@ -50,6 +51,7 @@ export const generateCaptions = async (params: GenerateCaptionsRequest): Promise
     [Caption] Provide a brief but engaging caption with appropriate hashtags.
     [Call to Action] Suggest a CTA to encourage likes, shares, or comments.`;
 
+    console.log('Sending request to OpenAI API...');
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -73,11 +75,14 @@ export const generateCaptions = async (params: GenerateCaptionsRequest): Promise
     });
 
     if (!response.ok) {
-      throw new Error('Failed to generate captions');
+      const errorData = await response.json().catch(() => null);
+      console.error('OpenAI API error:', errorData || response.statusText);
+      throw new Error(`Failed to generate captions: ${response.statusText}`);
     }
 
     const data = await response.json();
     const rawContent = data.choices[0].message.content;
+    console.log('Received response from OpenAI API');
 
     // Parse the response into structured captions
     const captions = parseCaptions(rawContent);
