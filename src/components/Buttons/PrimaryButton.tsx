@@ -18,16 +18,17 @@
  */
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface PrimaryButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface PrimaryButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
   variant?: 'default' | 'ghost' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   loading?: boolean;
+  className?: string;
 }
 
 const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(
@@ -59,6 +60,11 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(
       outline: 'bg-transparent border border-primary text-primary hover:bg-primary/10'
     };
 
+    // Define motion props separately to avoid type conflicts
+    const motionProps: HTMLMotionProps<'button'> = {
+      whileTap: { scale: 0.98 }
+    };
+
     return (
       <motion.button
         ref={ref}
@@ -69,8 +75,7 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(
           className
         )}
         disabled={disabled || loading}
-        animate={{}}
-        whileTap={{ scale: 0.98 }}
+        {...motionProps}
         {...props}
       >
         {loading ? (

@@ -1,4 +1,3 @@
-
 /**
  * Sign Up Page
  * 
@@ -12,7 +11,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, User, Google } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -256,7 +255,7 @@ const SignUp: React.FC = () => {
             className="w-full border-slate-700 hover:bg-slate-800"
             size="lg"
             onClick={handleGoogleSignUp}
-            icon={<Google className="h-5 w-5" />}
+            icon={<Mail className="h-5 w-5" />}
             disabled={loading}
           >
             Continue with Google
