@@ -69,8 +69,8 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(
           className
         )}
         disabled={disabled || loading}
+        animate={{}}
         whileTap={{ scale: 0.98 }}
-        whileHover={!disabled && !loading ? { scale: 1.02 } : {}}
         {...props}
       >
         {loading ? (
