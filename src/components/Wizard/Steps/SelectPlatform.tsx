@@ -8,7 +8,6 @@ import {
   Facebook,
   Instagram,
   Youtube,
-  TiktokIcon,
   Info
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -51,7 +50,8 @@ const SelectPlatform: React.FC = () => {
         `${option.name} doesn't allow direct sharing. You'll be able to share using the Web API or download the post to share manually.`,
         {
           duration: 5000,
-          icon: <Info className="w-4 h-4" />
+          icon: <Info className="w-4 h-4" />,
+          dismissible: true // Make the toast dismissible
         }
       );
     }
@@ -59,7 +59,9 @@ const SelectPlatform: React.FC = () => {
 
   const handleNextStep = () => {
     if (!selectedPlatformId) {
-      toast.error("Please select a social media platform");
+      toast.error("Please select a social media platform", {
+        dismissible: true
+      });
       return;
     }
     

@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
+
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define the types of media that can be uploaded
 export type MediaType = 'image' | 'video' | 'text-only';
@@ -25,6 +26,7 @@ interface WizardContextType {
   goToNextStep: () => void;
   goToPreviousStep: () => void;
   resetWizard: () => void;
+  canProceedToNextStep: () => boolean;
 }
 
 const initialWizardData: WizardData = {
@@ -54,6 +56,31 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const savedData = localStorage.getItem('wizardData');
     return savedData ? JSON.parse(savedData) : initialWizardData;
   });
+  
+  // Validate if the current step is completed
+  const isCurrentStepCompleted = (): boolean => {
+    switch (currentStep) {
+      case 1:
+        return !!wizardData.mediaUrl && !!wizardData.mediaType;
+      case 2:
+        return !!wizardData.niche;
+      case 3:
+        return !!wizardData.platform;
+      case 4:
+        return !!wizardData.goal;
+      case 5:
+        return !!wizardData.tone;
+      case 6:
+        return !!wizardData.generatedCaptions;
+      default:
+        return false;
+    }
+  };
+  
+  // Check if we can proceed to the next step
+  const canProceedToNextStep = (): boolean => {
+    return isCurrentStepCompleted();
+  };
 
   const updateWizardData = (data: Partial<WizardData>) => {
     setWizardData((prev) => {
@@ -65,7 +92,7 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const goToNextStep = () => {
-    if (currentStep < 6) {
+    if (currentStep < 6 && isCurrentStepCompleted()) {
       setCurrentStep((prev) => (prev + 1) as WizardStep);
     }
   };
@@ -82,6 +109,27 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     localStorage.removeItem('wizardData');
   };
 
+  // Ensure we don't skip steps
+  useEffect(() => {
+    // If we try to access a step but previous steps aren't completed, go back to the last valid step
+    let validStep = 1;
+    for (let i = 1; i <= currentStep; i++) {
+      if (i === 1 || (i === 2 && wizardData.mediaUrl) || 
+          (i === 3 && wizardData.niche) || 
+          (i === 4 && wizardData.platform) ||
+          (i === 5 && wizardData.goal) ||
+          (i === 6 && wizardData.tone)) {
+        validStep = i;
+      } else {
+        break;
+      }
+    }
+    
+    if (validStep !== currentStep) {
+      setCurrentStep(validStep as WizardStep);
+    }
+  }, [currentStep, wizardData]);
+
   return (
     <WizardContext.Provider
       value={{
@@ -92,6 +140,7 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         goToNextStep,
         goToPreviousStep,
         resetWizard,
+        canProceedToNextStep,
       }}
     >
       {children}
