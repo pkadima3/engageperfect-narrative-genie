@@ -1,8 +1,7 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   X, RotateCw, RotateCcw, Crop, Type, RefreshCw, 
-  Save, ChevronLeft, ChevronRight, Image
+  Save, ChevronLeft, ChevronRight, Image as ImageIcon
 } from 'lucide-react';
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -34,7 +33,7 @@ const MediaEditor: React.FC<MediaEditorProps> = ({
 
   useEffect(() => {
     if (mediaType === 'image') {
-      const img = new Image();
+      const img = new window.Image();
       img.onload = () => {
         drawImageToCanvas(img);
       };
