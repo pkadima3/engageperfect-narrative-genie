@@ -12,6 +12,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import WizardPage from "./pages/wizard";
 import ProtectedRoute from "./components/Layout/ProtectedRoute";
 import { useEffect } from "react";
 import { initializeAnalytics } from "./lib/firebase";
@@ -56,6 +57,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <Profile />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/wizard" 
+                element={
+                  <ProtectedRoute>
+                    <WizardPage />
                   </ProtectedRoute>
                 } 
               />

@@ -73,7 +73,7 @@ const Dashboard: React.FC = () => {
           <div className="mt-8">
             <PrimaryButton
               size="lg"
-              onClick={() => navigate('/wizard/step1')}
+              onClick={() => navigate('/wizard')}
               className="w-full sm:w-auto"
             >
               Start Creating Content
