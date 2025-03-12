@@ -1,8 +1,8 @@
 
 import { toast } from "sonner";
 
-// Note: In a production environment, this should be handled by a backend service
-const OPENAI_API_KEY = 'your-api-key-here'; // Replace with actual key
+// Get the API key from environment variables
+const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
 export interface GenerateCaptionsRequest {
   tone: string;
@@ -22,6 +22,11 @@ export interface Caption {
 
 export const generateCaptions = async (params: GenerateCaptionsRequest): Promise<Caption[]> => {
   try {
+    if (!OPENAI_API_KEY || OPENAI_API_KEY === 'your-api-key-here') {
+      toast.error('Please set your OpenAI API key in the .env file');
+      return [];
+    }
+
     const prompt = `you are the world best content creator and digital, Social Media marketing and sales expert with over 20 years of hands-on experience, Create a highly engaging ${params.tone} caption for ${params.platform} about '${params.postIdea || 'this post'}'. 
     The caption must:
     1. Be concise and tailored to ${params.platform}'s audience and character limits (e.g., Instagram: 2200 characters, Twitter: 200 characters).
