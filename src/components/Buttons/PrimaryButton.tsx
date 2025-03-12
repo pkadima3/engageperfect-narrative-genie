@@ -18,17 +18,26 @@
  */
 
 import React from 'react';
-import { motion, HTMLMotionProps } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface PrimaryButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
+// Define props interface without extending HTML button attributes
+interface PrimaryButtonProps {
+  children: React.ReactNode;
   variant?: 'default' | 'ghost' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   loading?: boolean;
   className?: string;
+  disabled?: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  type?: 'button' | 'submit' | 'reset';
+  form?: string;
+  name?: string;
+  value?: string | ReadonlyArray<string> | number;
+  autoFocus?: boolean;
 }
 
 const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(
@@ -42,6 +51,8 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(
       iconPosition = 'left',
       loading = false,
       disabled,
+      onClick,
+      type = 'button',
       ...props
     },
     ref
@@ -60,14 +71,11 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(
       outline: 'bg-transparent border border-primary text-primary hover:bg-primary/10'
     };
 
-    // Define motion props separately to avoid type conflicts
-    const motionProps: HTMLMotionProps<'button'> = {
-      whileTap: { scale: 0.98 }
-    };
-
     return (
       <motion.button
         ref={ref}
+        type={type}
+        onClick={onClick}
         className={cn(
           'font-medium inline-flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-70 disabled:pointer-events-none',
           sizeClasses[size],
@@ -75,7 +83,7 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, PrimaryButtonProps>(
           className
         )}
         disabled={disabled || loading}
-        {...motionProps}
+        whileTap={{ scale: 0.98 }}
         {...props}
       >
         {loading ? (
