@@ -50,10 +50,19 @@ export const useWizard = () => {
 
 export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentStep, setCurrentStep] = useState<WizardStep>(1);
-  const [wizardData, setWizardData] = useState<WizardData>(initialWizardData);
+  const [wizardData, setWizardData] = useState<WizardData>(() => {
+    // Try to load saved data from localStorage
+    const savedData = localStorage.getItem('wizardData');
+    return savedData ? JSON.parse(savedData) : initialWizardData;
+  });
 
   const updateWizardData = (data: Partial<WizardData>) => {
-    setWizardData((prev) => ({ ...prev, ...data }));
+    setWizardData((prev) => {
+      const newData = { ...prev, ...data };
+      // Save to localStorage for persistence
+      localStorage.setItem('wizardData', JSON.stringify(newData));
+      return newData;
+    });
   };
 
   const goToNextStep = () => {
@@ -71,6 +80,7 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const resetWizard = () => {
     setCurrentStep(1);
     setWizardData(initialWizardData);
+    localStorage.removeItem('wizardData');
   };
 
   return (
