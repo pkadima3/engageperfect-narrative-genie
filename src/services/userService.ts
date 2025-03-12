@@ -2,6 +2,7 @@
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import { UserProfile } from "@/types/user";
+import { updateProfile } from "firebase/auth";
 
 // User collection reference
 const USERS_COLLECTION = "users";
@@ -59,8 +60,8 @@ export const updateUserDisplayName = async (displayName: string): Promise<void> 
     const user = auth.currentUser;
     if (!user) throw new Error("No authenticated user");
     
-    // First update the Firebase Auth display name
-    await user.updateProfile({ displayName });
+    // First update the Firebase Auth display name using the imported updateProfile function
+    await updateProfile(user, { displayName });
     
     // Then update the Firestore profile
     await updateUserProfile(user.uid, { displayName });
