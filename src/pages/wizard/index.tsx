@@ -5,6 +5,7 @@ import PageLayout from '@/components/Layout/PageLayout';
 import UploadMedia from '@/components/Wizard/Steps/UploadMedia';
 import SelectNiche from '@/components/Wizard/Steps/SelectNiche';
 import SelectPlatform from '@/components/Wizard/Steps/SelectPlatform';
+import SelectGoal from '@/components/Wizard/Steps/SelectGoal';
 import { Toaster } from 'sonner';
 
 // Wizard Content Component
@@ -21,9 +22,11 @@ const WizardContent: React.FC = () => {
       case 3:
         return !!wizardData.niche; // Niche must be selected
       case 4:
-      case 5:
-      case 6:
         return !!wizardData.platform; // Platform must be selected for subsequent steps
+      case 5:
+        return !!wizardData.goal; // Goal must be selected
+      case 6:
+        return !!wizardData.tone; // Tone must be selected for final step
       default:
         return false;
     }
@@ -51,7 +54,9 @@ const WizardContent: React.FC = () => {
       return <SelectNiche />;
     case 3:
       return <SelectPlatform />;
-    // We'll add the other steps later
+    case 4:
+      return <SelectGoal />;
+    // We'll add the tone step later
     default:
       return <UploadMedia />;
   }
