@@ -34,18 +34,24 @@ export const updateUserProfile = async (
   profileData: Partial<UserProfile>
 ): Promise<void> => {
   try {
+    console.log(`Updating user profile for ${userId}`, profileData);
+    
     const userDocRef = doc(db, USERS_COLLECTION, userId);
     const userDoc = await getDoc(userDocRef);
     
     if (userDoc.exists()) {
+      console.log(`User document exists, updating...`);
       await updateDoc(userDocRef, profileData);
     } else {
       // Create new user document if it doesn't exist
+      console.log(`User document does not exist, creating...`);
       await setDoc(userDocRef, {
         ...profileData,
-        createdAt: new Date().toISOString()
+        createdAt: profileData.createdAt || new Date().toISOString()
       });
     }
+    
+    console.log(`User profile updated successfully`);
   } catch (error) {
     console.error("Error updating user profile:", error);
     throw error;

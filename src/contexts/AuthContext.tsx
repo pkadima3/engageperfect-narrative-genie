@@ -26,6 +26,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
+import { updateUserProfile } from '@/services/userService';
 
 // Define the shape of our context
 interface AuthContextType {
@@ -65,6 +66,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Update the user's display name
       if (auth.currentUser) {
         await updateProfile(auth.currentUser, { displayName: username });
+        
+        // Create the user document in Firestore
+        await updateUserProfile(auth.currentUser.uid, {
+          displayName: username,
+          email: email,
+          createdAt: new Date().toISOString(),
+          plan_type: 'free'
+        });
       }
       
       return userCredential;
@@ -99,7 +108,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Sign in with Google
   const signInWithGoogle = async () => {
     try {
-      return await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      
+      // Create or update the user document in Firestore for Google sign-in
+      if (result.user) {
+        await updateUserProfile(result.user.uid, {
+          displayName: result.user.displayName || 'User',
+          email: result.user.email || '',
+          photoURL: result.user.photoURL || '',
+          createdAt: new Date().toISOString(),
+          plan_type: 'free'
+        });
+      }
+      
+      return result;
     } catch (error) {
       if (error instanceof Error) {
         toast({
