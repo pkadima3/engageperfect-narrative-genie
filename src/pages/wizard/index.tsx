@@ -4,6 +4,7 @@ import { WizardProvider, useWizard } from '@/contexts/WizardContext';
 import PageLayout from '@/components/Layout/PageLayout';
 import UploadMedia from '@/components/Wizard/Steps/UploadMedia';
 import SelectNiche from '@/components/Wizard/Steps/SelectNiche';
+import SelectPlatform from '@/components/Wizard/Steps/SelectPlatform';
 
 // Wizard Content Component
 const WizardContent: React.FC = () => {
@@ -14,6 +15,8 @@ const WizardContent: React.FC = () => {
       return <UploadMedia />;
     case 2:
       return <SelectNiche />;
+    case 3:
+      return <SelectPlatform />;
     // We'll add the other steps later
     default:
       return <UploadMedia />;
